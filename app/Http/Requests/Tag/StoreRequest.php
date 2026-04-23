@@ -25,38 +25,19 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'keywords' => 'required|string|max:255',
-            'product_id' => [
+            'title' => [
                 'required',
-                Rule::exists('products', 'id'),
-                Rule::unique('tags', 'product_id'),
+                'string',
+                Rule::unique('tags', 'title')
             ],
         ];
     }
     public function messages()
     {
         return [
-            // Поле title
-            'title.required' => 'Пожалуйста, введите название товара',
-            'title.string' => 'Название должно быть текстом',
-            'title.max' => 'Название не должно превышать 255 символов',
-
-            // Поле description
-            'description.required' => 'Пожалуйста, введите описание товара',
-            'description.string' => 'Описание должно быть текстом',
-            'description.max' => 'Описание не должно превышать 255 символов',
-
-            // Поле description
-            'keywords.required' => 'Пожалуйста, введите keywords товара',
-            'keywords.string' => 'keywords должно быть текстом',
-            'keywords.max' => 'keywords не должно превышать 255 символов',
-
-            // Поле product_id
-            'product_id.required' => 'Пожалуйста, выберите товар',
-            'product_id.exists' => 'Выбранный товар не существует или неактивен',
-            'product_id.unique' => 'SEO с такими параметрами уже существует',
+            'title.required' => 'это обязательное поле',
+            'title.string' => 'это поле должно быть строкой',
+            'title.unique' => 'Тег с таким названием уже существует',
         ];
     }
 }

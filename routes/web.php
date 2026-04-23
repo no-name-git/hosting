@@ -50,6 +50,17 @@ Route::middleware('admin')->prefix('product')->group(function (){
     Route::delete('/{product}', [App\Http\Controllers\Product\ProductController::class, 'delete'])->name('product.delete');
 });
 
+//SEO
+Route::middleware('admin')->prefix('seo')->group(function (){
+    Route::get('/', [App\Http\Controllers\Seo\SeoController::class, 'index'])->name('seo.index');
+    Route::get('/create', [App\Http\Controllers\Seo\SeoController::class, 'create'])->name('seo.create');
+    Route::post('/', [App\Http\Controllers\Seo\SeoController::class, 'store'])->name('seo.store');
+    Route::get('/{seo}/show', [App\Http\Controllers\Seo\SeoController::class, 'show'])->name('seo.show');
+    Route::get('/{seo}/edit', [App\Http\Controllers\Seo\SeoController::class, 'edit'])->name('seo.edit');
+    Route::patch('/{seo}', [App\Http\Controllers\Seo\SeoController::class, 'update'])->name('seo.update');
+    Route::delete('/{seo}', [App\Http\Controllers\Seo\SeoController::class, 'delete'])->name('seo.delete');
+});
+
 //TAG
 Route::middleware('admin')->prefix('tag')->group(function (){
     Route::get('/', [App\Http\Controllers\Tag\TagController::class, 'index'])->name('tag.index');

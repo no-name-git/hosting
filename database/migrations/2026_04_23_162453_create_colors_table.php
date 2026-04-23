@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('colors', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('code');
+            $table->string('color');
+
             $table->timestamps();
         });
     }
@@ -27,7 +29,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_tag');
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('color_product');
+        Schema::dropIfExists('color');
     }
 };

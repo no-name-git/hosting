@@ -1,5 +1,5 @@
 <?php
-$title = 'Вкусно как дома';
+$title = 'OZON';
 ?>
     <!DOCTYPE html>
 <html lang="ru">
@@ -213,26 +213,58 @@ $title = 'Вкусно как дома';
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{route('category.index')}}" class="nav-link">
-                            <i class="fas fa-list"></i>
+                        <a href="" class="nav-link">
+                            <i class="fas fa-clipboard-list"></i>
                             <p>
-                                категории
+                                Заказы
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('category.index')}}" class="nav-link">
+                            <i class="fas fa-folder-open"></i>
+                            <p>
+                                Категории
                             </p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{route('product.index')}}" class="nav-link">
-                            <i class="fas fa-hamburger"></i>
+                            <i class="fas fa-box"></i>
                             <p>
-                                продукты
+                                Продукты
                             </p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{route('tag.index')}}" class="nav-link">
-                            <i class="fas fa-link"></i>
+                            <i class="fas fa-tag"></i>
+                            <p>
+                                Теги
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                            <i class="fas fa-palette"></i>
+                            <p>
+                                Цвета
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('seo.index')}}" class="nav-link">
+                            <i class="fas fa-robot"></i>
                             <p>
                                 SEO
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <p>
+                                Пользователи
                             </p>
                         </a>
                     </li>

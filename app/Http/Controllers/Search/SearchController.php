@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Search;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Search\SearchRequest;
-use App\Http\Requests\Tag\StoreRequest;
+use App\Http\Requests\Seo\StoreRequest;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
 

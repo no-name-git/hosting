@@ -55,7 +55,7 @@ class ProductController extends Controller
                     'product_id' => $product->id,
                     'is_active' => 1,
                 ]);
-        return redirect()->route('tag.create')->with('success', 'Продукт успешно создан');
+        return redirect()->route('seo.create')->with('success', 'Продукт успешно создан');
     }
 
     /**

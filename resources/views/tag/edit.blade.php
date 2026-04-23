@@ -1,10 +1,11 @@
-@extends('layouts.main', ['title_page' => 'Редактирование тега'])
+@extends('layouts.main', ['title_page' => 'Редактирование категории'])
 
 @section('content')
-<form action="{{route('tag.update', $tag->id)}}" method="post" style="width: 250px;">
+<form action="{{route('category.update', $category->id)}}" method="post" style="width: 250px;">
     @csrf
     @method('patch')
-    @include('tag.layouts.form')
+    @include('category.layouts.form')
+    </div>
     <button type="submit" class="btn btn-primary">Редактировать</button>
 </form>
 
