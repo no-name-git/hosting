@@ -16,10 +16,26 @@
 namespace App\Services;
 
 use App\Models\Product;
-use App\Repositories\ProductRepository;
+use App\Repositories\CategoryRepository;
+use App\Repositories\ColorRepository;
+use App\Repositories\TagRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
+    public function __construct(
+      private CategoryRepository $categoryRepository,
+      private TagRepository $tagRepository,
+      private ColorRepository $colorRepository
+    ){}
 
+
+    public function create():array
+    {
+        return [
+            'categoryForProduct' => $this->categoryRepository->getForProduct(),
+            'tagForProduct' => $this->tagRepository->getForProduct(),
+            'colorForProduct' => $this->colorRepository->getForProduct(),
+        ];
+    }
 }

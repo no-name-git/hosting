@@ -11,7 +11,7 @@
         </tr>
         <tr>
             <th scope="col">Пример цвета:</th>
-            <td><div style="width: 15px; height: 15px; border: 1px solid; background: #{{$showColor->code}}"></div></td>
+            <td><div style="width: 15px; height: 15px; border: 1px solid; background: {{'#' . $showColor->code}}"></div></td>
         </tr>
         <tr>
             <th scope="col">Название:</th>

@@ -8,10 +8,17 @@ use Illuminate\Support\Collection;
 
 class ColorRepository
 {
-    public function getList(int $perPage): LengthAwarePaginator
+    public function getList(int $perPage = 20): LengthAwarePaginator
     {
         return Color::paginate($perPage);
     }
+
+
+    public function getForProduct()
+    {
+        return Color::select('id', 'code', 'title')->get();
+    }
+
 
     public function create(array $data): Color
     {

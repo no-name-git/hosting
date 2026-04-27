@@ -50,13 +50,13 @@ Route::middleware('admin')->prefix('seo')->group(function (){
 
 //TAG
 Route::middleware('admin')->prefix('tag')->group(function (){
-    Route::get('/', [App\Http\Controllers\Tag\UserController::class, 'index'])->name('tag.index');
-    Route::get('/create', [App\Http\Controllers\Tag\UserController::class, 'create'])->name('tag.create');
-    Route::post('/', [App\Http\Controllers\Tag\UserController::class, 'store'])->name('tag.store');
-    Route::get('/{tag}/show', [App\Http\Controllers\Tag\UserController::class, 'show'])->name('tag.show');
-    Route::get('/{tag}/edit', [App\Http\Controllers\Tag\UserController::class, 'edit'])->name('tag.edit');
-    Route::patch('/{tag}', [App\Http\Controllers\Tag\UserController::class, 'update'])->name('tag.update');
-    Route::delete('/{tag}', [App\Http\Controllers\Tag\UserController::class, 'delete'])->name('tag.delete');
+    Route::get('/', [App\Http\Controllers\Tag\TagController::class, 'index'])->name('tag.index');
+    Route::get('/create', [App\Http\Controllers\Tag\TagController::class, 'create'])->name('tag.create');
+    Route::post('/', [App\Http\Controllers\Tag\TagController::class, 'store'])->name('tag.store');
+    Route::get('/{tag}/show', [App\Http\Controllers\Tag\TagController::class, 'show'])->name('tag.show');
+    Route::get('/{tag}/edit', [App\Http\Controllers\Tag\TagController::class, 'edit'])->name('tag.edit');
+    Route::patch('/{tag}', [App\Http\Controllers\Tag\TagController::class, 'update'])->name('tag.update');
+    Route::delete('/{tag}', [App\Http\Controllers\Tag\TagController::class, 'delete'])->name('tag.delete');
 });
 
 //Color

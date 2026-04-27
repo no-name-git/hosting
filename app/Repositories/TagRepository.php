@@ -8,9 +8,14 @@ use Illuminate\Support\Collection;
 
 class TagRepository
 {
-    public function getList(int $perPage): LengthAwarePaginator
+    public function getList(int $perPage = 20): LengthAwarePaginator
     {
         return Tag::paginate($perPage);
+    }
+
+    public function getForProduct()
+    {
+        return Tag::select('id', 'title')->get();
     }
 
     public function create(array $data): Tag

@@ -8,11 +8,15 @@ use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImages;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function __construct(
+        private ProductService $productService
+    ){}
     /**
      * Display a listing of the resource.
      *
@@ -31,8 +35,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::select('id', 'title')->get();
-        return view('product.create', compact('categories'));
+        $data = $this->productService->create();
+        return view('product.create', compact('data'));
     }
 
     /**

@@ -13,7 +13,7 @@
     @enderror
 </div>
 <div class="">
-    <label for="title" class="form-label">Описание</label>
+    <label for="title" class="form-label">Контент</label>
     <textarea
         name="description"
         id="description"
@@ -28,36 +28,7 @@
     </div>
     @enderror
 </div>
-<div class="">
-    <label for="title" class="form-label">Состав</label>
-    <textarea
-        name="structure"
-        id="structure"
-        cols="10" rows="2"
-        class="form-control @error('structure') is-invalid @enderror"
-    >
-        {{ old('structure', $product->structure ?? '') }}
-    </textarea>
-    @error('structure')
-    <div class="invalid-feedback">
-        <i class="bi bi-exclamation-circle"></i> {{ $message }}
-    </div>
-    @enderror
-</div>
-<div class="">
-    <label for="cooking_method" class="form-label">Метод приготовления</label>
-    <input type="text"
-           name="cooking_method"
-           id="cooking_method"
-           value="{{ old('cooking_method', $product->cooking_method ?? '') }}"
-           class="form-control @error('cooking_method') is-invalid @enderror"
-           placeholder="Введите метод приготовления">
-    @error('cooking_method')
-    <div class="invalid-feedback">
-        <i class="bi bi-exclamation-circle"></i> {{ $message }}
-    </div>
-    @enderror
-</div>
+
 <div class="mb-2">
     <label for="price" class="form-label">Цена</label>
     <input type="number"
@@ -78,7 +49,7 @@
 <div class="mb-2 custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
     <input type="hidden" name="is_published" value="0">
     <input type="checkbox" name="is_published" value="1"
-           @checked(old('is_published', isset($product) ? $product->is_published: true))  class="custom-control-input"
+{{--           @checked(old('is_published', isset($product) ? $product->is_published: true))  class="custom-control-input"--}}
            id="customSwitch3">
     <label class="custom-control-label" for="customSwitch3">
         Опубликовано
@@ -91,7 +62,7 @@
 <div class="mb-2 custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
     <input type="hidden" name="hit_sale" value="0">
     <input type="checkbox" name="hit_sale" value="1"
-           @checked(old('hit_sale', isset($product) ? $product->hit_sale: false))  class="custom-control-input"
+{{--           @checked(old('hit_sale', isset($product) ? $product->hit_sale: false))  class="custom-control-input"--}}
            id="customSwitch4">
     <label class="custom-control-label" for="customSwitch4">
         Хит продаж
@@ -101,27 +72,11 @@
     @enderror
 </div>
 
-<div class="">
-    <label for="calories" class="form-label">Калории</label>
-    <input type="number"
-           name="calories"
-           id="calories"
-           value="{{ old('calories', $product->calories ?? '') }}"
-           class="form-control @error('calories') is-invalid @enderror"
-           placeholder="Введите количество калорий"
-           min="0"
-    >
-    @error('calories')
-    <div class="invalid-feedback">
-        <i class="bi bi-exclamation-circle"></i> {{ $message }}
-    </div>
-    @enderror
-</div>
 <div class="form-group">
     <label>Категория</label>
     <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
         <option value="">Выберите категорию</option>
-        @foreach($categories as $category)
+        @foreach($data['categoryForProduct'] as $category)
             <option
                 value="{{$category->id}}"
                 @if(old('category_id', $product->category_id ?? null) == $category->id)
@@ -139,6 +94,51 @@
     </div>
     @enderror
 </div>
+
+<div class="form-group">
+    <label>Цвет</label>
+    <select class="form-control @error('color') is-invalid @enderror" name="color">
+        <option value="">Выберите цвет</option>
+        @foreach($data['colorForProduct'] as $color)
+            <option
+                value="{{$color->id}}"
+                @if(old('color', $product->colors ?? null) == $color->id)
+                    selected
+                @endif
+                style="background: {{'#' . $color->code}}; border: 1px solid; display: inline-block; "
+            >
+                {{$color->title}}
+            </option>
+        @endforeach
+    </select>
+
+    @error('color')
+    <div class="invalid-feedback d-block">
+        <i class="bi bi-exclamation-circle"></i> {{ $message }}
+    </div>
+    @enderror
+</div>
+
+<div class="form-group">
+    <div>
+        <label>Теги</label>
+        <select name="tags[]" class="form-control" multiple size="5">
+            @foreach($data['tagForProduct'] as $tag)
+                <option value="{{ $tag->id }}">{{ $tag->title }}</option>
+            @endforeach
+        </select>
+        <small class="form-text text-muted">Зажмите Ctrl (Cmd) для выбора нескольких тегов</small>
+
+    </div>
+
+    @error('color')
+    <div class="invalid-feedback d-block">
+        <i class="bi bi-exclamation-circle"></i> {{ $message }}
+    </div>
+    @enderror
+</div>
+
+
 
 <!-- Добавление новых изображений -->
 <div class="mb-4">

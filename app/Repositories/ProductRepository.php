@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProductRepository
 {
+
     #ищем продукт по айдишнику
     public function findById(int $id): ?Product #получает айдишник как число и если находит то возвращяет продукт , если нет то ничего не вернет
     {
@@ -79,5 +80,12 @@ class ProductRepository
             ->orWhere('description', 'LIKE', "%{$query}%")
             ->orWhere('cooking_method', 'LIKE', "%{$query}%")
             ->paginate($perPage);
+    }
+
+    public function create()
+    {
+                    //        категории
+                    //        теги
+                    //        цвет
     }
 }

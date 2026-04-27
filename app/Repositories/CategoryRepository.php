@@ -12,6 +12,11 @@ class CategoryRepository
         return Category::paginate($perPage);
     }
 
+    public function getForProduct()
+    {
+        return Category::select('id', 'title')->get();
+    }
+
     public function getFind($id): ?Category
     {
         return Category::find($id);
