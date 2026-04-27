@@ -3,19 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
-
 Route::get('/fbhmechdhe', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -63,13 +50,13 @@ Route::middleware('admin')->prefix('seo')->group(function (){
 
 //TAG
 Route::middleware('admin')->prefix('tag')->group(function (){
-    Route::get('/', [App\Http\Controllers\Tag\TagController::class, 'index'])->name('tag.index');
-    Route::get('/create', [App\Http\Controllers\Tag\TagController::class, 'create'])->name('tag.create');
-    Route::post('/', [App\Http\Controllers\Tag\TagController::class, 'store'])->name('tag.store');
-    Route::get('/{tag}/show', [App\Http\Controllers\Tag\TagController::class, 'show'])->name('tag.show');
-    Route::get('/{tag}/edit', [App\Http\Controllers\Tag\TagController::class, 'edit'])->name('tag.edit');
-    Route::patch('/{tag}', [App\Http\Controllers\Tag\TagController::class, 'update'])->name('tag.update');
-    Route::delete('/{tag}', [App\Http\Controllers\Tag\TagController::class, 'delete'])->name('tag.delete');
+    Route::get('/', [App\Http\Controllers\Tag\UserController::class, 'index'])->name('tag.index');
+    Route::get('/create', [App\Http\Controllers\Tag\UserController::class, 'create'])->name('tag.create');
+    Route::post('/', [App\Http\Controllers\Tag\UserController::class, 'store'])->name('tag.store');
+    Route::get('/{tag}/show', [App\Http\Controllers\Tag\UserController::class, 'show'])->name('tag.show');
+    Route::get('/{tag}/edit', [App\Http\Controllers\Tag\UserController::class, 'edit'])->name('tag.edit');
+    Route::patch('/{tag}', [App\Http\Controllers\Tag\UserController::class, 'update'])->name('tag.update');
+    Route::delete('/{tag}', [App\Http\Controllers\Tag\UserController::class, 'delete'])->name('tag.delete');
 });
 
 //Color
@@ -81,6 +68,16 @@ Route::middleware('admin')->prefix('color')->group(function (){
     Route::get('/{color}/edit', [App\Http\Controllers\Color\ColorController::class, 'edit'])->name('color.edit');
     Route::patch('/{color}', [App\Http\Controllers\Color\ColorController::class, 'update'])->name('color.update');
     Route::delete('/{color}', [App\Http\Controllers\Color\ColorController::class, 'delete'])->name('color.delete');
+});
+//Profile
+Route::middleware('admin')->prefix('user')->group(function (){
+    Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('user.index');
+    Route::get('/create', [App\Http\Controllers\User\UserController::class, 'create'])->name('user.create');
+    Route::post('/', [App\Http\Controllers\User\UserController::class, 'store'])->name('user.store');
+    Route::get('/{user}/show', [App\Http\Controllers\User\UserController::class, 'show'])->name('user.show');
+    Route::get('/{user}/edit', [App\Http\Controllers\User\UserController::class, 'edit'])->name('user.edit');
+    Route::patch('/{user}', [App\Http\Controllers\User\UserController::class, 'update'])->name('user.update');
+    Route::delete('/{user}', [App\Http\Controllers\User\UserController::class, 'delete'])->name('user.delete');
 });
 
 Route::get('/search', [\App\Http\Controllers\Search\SearchController::class, 'index'])

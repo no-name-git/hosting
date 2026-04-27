@@ -29,6 +29,8 @@ class StoreRequest extends FormRequest
                 'required',
                 'string',
                 Rule::unique('colors', 'code'),
+                'regex:/^([A-Fa-f0-9]{6}[A-Fa-f0-9]{3}$/)'
+
             ],
             'code' => 'min:3|max:6',
             'title' => 'required|string'

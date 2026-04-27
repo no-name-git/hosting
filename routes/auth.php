@@ -12,20 +12,20 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('ilwsibpttc', [RegisteredUserController::class, 'create'])
+    Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
 
-    Route::post('ilwsibpttc', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('rdsncoobrf', [AuthenticatedSessionController::class, 'create'])
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
 
-    Route::post('rdsncoobrf', [AuthenticatedSessionController::class, 'store']);
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('lwcunlcalm', [PasswordResetLinkController::class, 'create'])
+    Route::get('password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');
 
-    Route::post('lwcunlcalm', [PasswordResetLinkController::class, 'store'])
+    Route::post('password', [PasswordResetLinkController::class, 'store'])
                 ->name('password.email');
 
     Route::get('dacfwequvi/{token}', [NewPasswordController::class, 'create'])
