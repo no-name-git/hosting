@@ -1,4 +1,4 @@
-@extends('layouts.main', ['title_page' => $showTag->title])
+@extends('layouts.main', ['title_page' => $showColor->title])
 
 
 @section('content')
@@ -7,20 +7,25 @@
 
         <tr>
             <th scope="col">#</th>
-            <th scope="row">{{$showTag->id}}</th>
+            <th scope="row">{{$showColor->id}}</th>
+        </tr>
+        <tr>
+            <th scope="col">Пример цвета:</th>
+            <td><div style="width: 15px; height: 15px; border: 1px solid; background: #{{$showColor->code}}"></div></td>
         </tr>
         <tr>
             <th scope="col">Название:</th>
-            <td>{{$showTag->title}}</td>
+            <td>{{$showColor->title}}</td>
         </tr>
+
         <tr>
             <th scope="col">Количество продуктов в теги:</th>
-            <td>{{$showTag->products_count}}</td>
+            <td>{{$showColor->products_count}}</td>
         </tr>
         <tr>
             <th scope="col">Редактировать:</th>
             <th scope="row">
-                <a href="{{route('tag.edit', $showTag->id)}}" class="btn btn-warning">
+                <a href="{{route('color.edit', $showColor->id)}}" class="btn btn-warning">
                     Редактировать
                 </a>
             </th>
@@ -28,7 +33,7 @@
         <tr>
             <th>Удалить:</th>
             <td>
-                <form action="{{route('tag.delete', $showTag->id)}}" method="post">
+                <form action="{{route('color.delete', $showColor->id)}}" method="post">
                     @csrf
                     @method('delete')
                     <button class="btn btn-danger" type="submit">удалить</button>
@@ -38,10 +43,10 @@
 
         </tbody>
     </table>
-    @if(isset($showTag->products_list) && $showTag->products_count > 0)
+    @if(isset($showColor->products_list) && $showColor->products_count > 0)
         <div style="width: 100%; max-width: 700px">
             <p style="margin-bottom: 16px;">Товары данного тега:</p>
-            @foreach($showTag->products_list as $product)
+            @foreach($showColor->products_list as $product)
                 <div
                     style="border: 1px solid #88939e; border-radius: 20px; padding: 10px 20px; display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <a href="{{route('product.show', $product->id)}}">{{Str::limit($product->title, 30, '...')}}</a>
@@ -57,7 +62,7 @@
                 </div>
             @endforeach
             <nav class="mt-3" aria-label="Page navigation">
-                {{ $showTag->products_list->links('pagination::bootstrap-5') }}
+                {{ $showColor->products_list->links('pagination::bootstrap-5') }}
             </nav>
         </div>
 

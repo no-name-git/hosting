@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\Tag;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -24,7 +25,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string'
+            'title' => 'required',
+            'string',
+            Rule::unique('tags', 'title'),
         ];
     }
     public function messages()
@@ -32,7 +35,7 @@ class UpdateRequest extends FormRequest
         return [
             'title.required' => 'это обязательное поле',
             'title.string' => 'это поле должно быть строкой',
-
+            'title.unique' => 'Тег с таким названием уже существует',
         ];
     }
 }

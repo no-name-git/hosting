@@ -1,7 +1,7 @@
-@extends('layouts.main', ['title_page' => "теги для товара"])
+@extends('layouts.main', ['title_page' => "цвета для товара"])
 
 @section('content')
-    <a href="{{route('tag.create')}}" class="btn btn-primary mb-3">Создать</a>
+    <a href="{{route('color.create')}}" class="btn btn-primary mb-3">Создать</a>
     <table class="table">
         <thead>
         <tr>
@@ -13,33 +13,33 @@
         </tr>
         </thead>
         <tbody>
-        @if(isset($tags) && $tags->count() > 0)
-            @foreach($tags as $tag)
+        @if(isset($colors) && $colors->count() > 0)
+            @foreach($colors as $color)
                 <tr>
-                    <th scope="row">{{$tag->id}}</th>
+                    <th scope="row">{{$color->id}}</th>
                     <td>
-                        <a href="{{route('tag.show', $tag->id)}}">
-                            {{$tag->title}}
+                        <a href="{{route('color.show', $color->id)}}">
+                            {{$color->title}}
                         </a>
                     </td>
-                    @if(isset($tag->products) && $tag->products->count() > 0)
+                    @if(isset($color->products) && $color->products->count() > 0)
                         <td>
-                            <a href="{{route('product.show', $tag->products->first()->id)}}">
-                                {{$tag->products->first()->title}}
+                            <a href="{{route('product.show', $color->products->first()->id)}}">
+                                {{$color->products->first()->title}}
                             </a>
                         </td>
                     @else
                         <td>
-                            <p>у тега нет товаров</p>
+                            <p>у цвета нет товаров</p>
                         </td>
                     @endif
                     <th scope="row">
-                        <a href="{{route('tag.edit', $tag->id)}}" class="btn btn-warning">
+                        <a href="{{route('color.edit', $color->id)}}" class="btn btn-warning">
                             Редактировать
                         </a>
                     </th>
                     <td>
-                        <form action="{{route('tag.delete', $tag->id)}}" method="post">
+                        <form action="{{route('color.delete', $color->id)}}" method="post">
                             @csrf
                             @method('delete')
                             <button class="btn btn-danger" type="submit">удалить</button>

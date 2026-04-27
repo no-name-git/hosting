@@ -10,7 +10,8 @@ class TagService
 {
 
     public function __construct(
-        private TagRepository $tagRepository
+        private TagRepository $tagRepository,
+
     )
     {
     }
@@ -24,4 +25,28 @@ class TagService
     {
         return $this->tagRepository->create($data);
     }
+
+    public function getFind(int $id): Tag
+    {
+        $tag = $this->tagRepository->getFind($id);
+        $tag->products_count = $tag->getCountProduct();
+        $tag->products_list = $this->tagRepository->getProductForTag($id, $perPage = 20);
+        return $tag;
+    }
+
+    public function edit(int $id): Tag
+    {
+        return $this->tagRepository->getFind($id);
+    }
+
+    public function update(array $data, int $id) :Tag
+    {
+        return $this->tagRepository->update($data, $id);
+    }
+
+    public function delete(int $id): bool
+    {
+        return $this->tagRepository->delete($id);
+    }
+
 }

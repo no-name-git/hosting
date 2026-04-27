@@ -3,7 +3,7 @@
     <input type="text"
            name="title"
            id="title"
-           value="{{ old('title', $category->title ?? '') }}"
+           value="{{ old('title', $tag->title ?? '') }}"
            class="form-control @error('title') is-invalid @enderror"
            placeholder="Введите название">
 

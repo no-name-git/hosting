@@ -15,4 +15,10 @@ class Tag extends Model
     {
         return $this->belongsToMany(Product::class, 'product_tag');
     }
+
+    public function getCountProduct() :int
+    {
+        return $this->products()->count();
+    }
+
 }

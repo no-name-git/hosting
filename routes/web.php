@@ -71,6 +71,18 @@ Route::middleware('admin')->prefix('tag')->group(function (){
     Route::patch('/{tag}', [App\Http\Controllers\Tag\TagController::class, 'update'])->name('tag.update');
     Route::delete('/{tag}', [App\Http\Controllers\Tag\TagController::class, 'delete'])->name('tag.delete');
 });
+
+//Color
+Route::middleware('admin')->prefix('color')->group(function (){
+    Route::get('/', [App\Http\Controllers\Color\ColorController::class, 'index'])->name('color.index');
+    Route::get('/create', [App\Http\Controllers\Color\ColorController::class, 'create'])->name('color.create');
+    Route::post('/', [App\Http\Controllers\Color\ColorController::class, 'store'])->name('color.store');
+    Route::get('/{color}/show', [App\Http\Controllers\Color\ColorController::class, 'show'])->name('color.show');
+    Route::get('/{color}/edit', [App\Http\Controllers\Color\ColorController::class, 'edit'])->name('color.edit');
+    Route::patch('/{color}', [App\Http\Controllers\Color\ColorController::class, 'update'])->name('color.update');
+    Route::delete('/{color}', [App\Http\Controllers\Color\ColorController::class, 'delete'])->name('color.delete');
+});
+
 Route::get('/search', [\App\Http\Controllers\Search\SearchController::class, 'index'])
     ->middleware('admin')
     ->name('search');
