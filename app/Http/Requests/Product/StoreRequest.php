@@ -32,15 +32,13 @@ class StoreRequest extends FormRequest
                     Rule::unique('products', 'title')
                 ],
             'description' => 'required|string',
-            'structure' => 'nullable|string',
-            'cooking_method' => 'nullable|string',
             'price' => 'required|integer|min:1',
             'is_published' => 'required|boolean',
-            'calories' => 'nullable|integer|min:1',
             'hit_sale' => 'required|boolean',
             'images' => 'required|file|mimes:jpeg,png,gif,webp|max:5120',
             'category_id' => ['required', Rule::exists('categories', 'id')],
-//            'main_image_index' => 'required|integer|min:1|max:1',
+            'color' => 'required|integer',
+            'tags' => 'nullable|array'
         ];
     }
     public function messages()

@@ -88,4 +88,9 @@ class ProductRepository
                     //        теги
                     //        цвет
     }
+
+    public function getFind($id)
+    {
+        return Product::find($id);
+    }
 }

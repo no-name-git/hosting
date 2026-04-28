@@ -49,7 +49,7 @@
 <div class="mb-2 custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
     <input type="hidden" name="is_published" value="0">
     <input type="checkbox" name="is_published" value="1"
-{{--           @checked(old('is_published', isset($product) ? $product->is_published: true))  class="custom-control-input"--}}
+           @checked(old('is_published', isset($product) ? $product->is_published: true))  class="custom-control-input"
            id="customSwitch3">
     <label class="custom-control-label" for="customSwitch3">
         Опубликовано
@@ -62,7 +62,7 @@
 <div class="mb-2 custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
     <input type="hidden" name="hit_sale" value="0">
     <input type="checkbox" name="hit_sale" value="1"
-{{--           @checked(old('hit_sale', isset($product) ? $product->hit_sale: false))  class="custom-control-input"--}}
+           @checked(old('hit_sale', isset($product) ? $product->hit_sale: false))  class="custom-control-input"
            id="customSwitch4">
     <label class="custom-control-label" for="customSwitch4">
         Хит продаж

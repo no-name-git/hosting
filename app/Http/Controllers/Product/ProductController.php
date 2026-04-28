@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
-        $images = $data['images'];
+        $product = $this->productService->store($data);
         unset($data['images']);
         $product = Product::create($data);
 
