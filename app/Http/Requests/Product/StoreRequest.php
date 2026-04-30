@@ -37,8 +37,11 @@ class StoreRequest extends FormRequest
             'hit_sale' => 'required|boolean',
             'images' => 'required|file|mimes:jpeg,png,gif,webp|max:5120',
             'category_id' => ['required', Rule::exists('categories', 'id')],
-            'color' => 'required|integer',
-            'tags' => 'nullable|array'
+            'colors' => 'required|array',
+            'tags' => 'nullable|array',
+            'count' => 'required|integer',
+            'discount' => 'nullable|integer|max:99',
+            'oldPrice' => 'nullable|integer'
         ];
     }
     public function messages()

@@ -17,14 +17,9 @@ class ProductService
       private CategoryRepository $categoryRepository,
       private TagRepository $tagRepository,
       private ColorRepository $colorRepository,
-      private ProductImageRepository $productImageRepository,
       private ProductRepository $productRepository,
     ){}
 
-    public function getFint(int $id)
-    {
-        return $this->productRepository->getFind($id);
-    }
 
 
     public function create():array
@@ -36,14 +31,4 @@ class ProductService
         ];
     }
 
-    public function store(array $data)
-    {
-        $images = $data['images'];
-        $this->productImageRepository->store($images);
-
-
-        unset($data['images']);
-
-
-    }
 }

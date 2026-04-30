@@ -17,11 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('structure')->nullable();
-            $table->string('cooking_method')->nullable();
             $table->unsignedInteger('price');
             $table->boolean('is_published')->default(1);
-            $table->integer('calories')->nullable();
             $table->boolean('hit_sale')->nullable();
             $table->foreignId('category_id')->nullable()->index()->constrained('categories')->onDelete('cascade');
             $table->timestamps();

@@ -46,6 +46,40 @@
     @enderror
 </div>
 
+<div class="mb-2">
+    <label for="discount" class="form-label">Скидка</label>
+    <input type="number"
+           name="discount"
+           id="discount"
+           value="{{ old('discount', $product->discount ?? '') }}"
+           class="form-control @error('discount') is-invalid @enderror"
+           placeholder="Введите скидку в %"
+           min="0"
+    >
+    @error('discount')
+    <div class="invalid-feedback">
+        <i class="bi bi-exclamation-circle"></i> {{ $message }}
+    </div>
+    @enderror
+</div>
+<input type="hidden" name="oldPrice">
+<div class="mb-2">
+    <label for="count" class="form-label">Количество товара</label>
+    <input type="number"
+           name="count"
+           id="count"
+           value="{{ old('count', $product->count ?? '') }}"
+           class="form-control @error('count') is-invalid @enderror"
+           placeholder="Введите количество товара"
+           min="0"
+    >
+    @error('count')
+    <div class="invalid-feedback">
+        <i class="bi bi-exclamation-circle"></i> {{ $message }}
+    </div>
+    @enderror
+</div>
+
 <div class="mb-2 custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
     <input type="hidden" name="is_published" value="0">
     <input type="checkbox" name="is_published" value="1"
@@ -76,7 +110,7 @@
     <label>Категория</label>
     <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
         <option value="">Выберите категорию</option>
-        @foreach($data['categoryForProduct'] as $category)
+@foreach($categories as $category)
             <option
                 value="{{$category->id}}"
                 @if(old('category_id', $product->category_id ?? null) == $category->id)
@@ -95,24 +129,27 @@
     @enderror
 </div>
 
-<div class="form-group">
-    <label>Цвет</label>
-    <select class="form-control @error('color') is-invalid @enderror" name="color">
-        <option value="">Выберите цвет</option>
-        @foreach($data['colorForProduct'] as $color)
-            <option
-                value="{{$color->id}}"
-                @if(old('color', $product->colors ?? null) == $color->id)
-                    selected
-                @endif
-                style="background: {{'#' . $color->code}}; border: 1px solid; display: inline-block; "
-            >
-                {{$color->title}}
-            </option>
-        @endforeach
-    </select>
 
-    @error('color')
+<div class="form-group">
+    <div>
+        <label>Цвета</label>
+        <select name="colors[]" class="form-control" multiple size="5">
+            @foreach($colors as $color)
+                <option
+                    value="{{ $color->id }}"
+                    @if(old('colors', $selectedColors ?? []) && in_array($color->id, old('colors', $selectedColors ?? [])))
+                        selected
+                    @endif
+                >
+                    {{ $color->title }}
+                </option>
+            @endforeach
+        </select>
+        <small class="form-text text-muted">Зажмите Ctrl (Cmd) для выбора нескольких тегов</small>
+
+    </div>
+
+    @error('colors')
     <div class="invalid-feedback d-block">
         <i class="bi bi-exclamation-circle"></i> {{ $message }}
     </div>
@@ -123,7 +160,7 @@
     <div>
         <label>Теги</label>
         <select name="tags[]" class="form-control" multiple size="5">
-            @foreach($data['tagForProduct'] as $tag)
+            @foreach($tags as $tag)
                 <option value="{{ $tag->id }}">{{ $tag->title }}</option>
             @endforeach
         </select>
@@ -131,7 +168,7 @@
 
     </div>
 
-    @error('color')
+    @error('tags')
     <div class="invalid-feedback d-block">
         <i class="bi bi-exclamation-circle"></i> {{ $message }}
     </div>
