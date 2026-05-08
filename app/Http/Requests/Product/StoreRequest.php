@@ -25,68 +25,80 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => [
-                    'required',
-                    'string',
-                    'max:255',
-                    Rule::unique('products', 'title')
-                ],
+            'title' => 'required|string|max:255|unique:products,title',
             'description' => 'required|string',
-            'price' => 'required|integer|min:1',
-            'is_published' => 'required|boolean',
-            'hit_sale' => 'required|boolean',
-            'images' => 'required|file|mimes:jpeg,png,gif,webp|max:5120',
-            'category_id' => ['required', Rule::exists('categories', 'id')],
-            'colors' => 'required|array',
-            'tags' => 'nullable|array',
-            'count' => 'required|integer',
-            'discount' => 'nullable|integer|max:99',
-            'oldPrice' => 'nullable|integer'
+            'category_id' => 'required|exists:categories,id',
+
+
+
+            // Варианты товара (массив)
+            'variants' => 'required|array|min:1',
+            'variants.*.sku' => 'required|string|unique:product_variants,sku',
+            'variants.*.price' => 'required|numeric|min:0',
+            'variants.*.old_price' => 'nullable|numeric|min:0',
+            'variants.*.count' => 'required|integer|min:0',
+
+            // Изображения для КАЖДОГО варианта
+            'variants.*.images' => 'required|array|min:1|max:10',
+            'variants.*.images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+
+            // Атрибуты для каждого варианта (размер, цвет и т.д.)
+            'variants.*.attribute_values' => 'required|array|min:1',
+            'variants.*.attribute_values.*' => 'exists:attribute_values,id',
         ];
     }
+
     public function messages()
     {
         return [
-            // Поле title
-            'title.required' => 'Пожалуйста, введите название товара',
-            'title.string' => 'Название должно быть текстом',
-            'title.max' => 'Название не должно превышать 255 символов',
-            'title.unique' => 'Продукт с таким названием уже существует',
+            // ----- Основной товар -----
+            'title.required' => 'Название товара обязательно.',
+            'title.string' => 'Название должно быть строкой.',
+            'title.max' => 'Название не может превышать 255 символов.',
+            'title.unique' => 'Товар с таким названием уже существует.',
 
-            // Поле description
-            'description.required' => 'Пожалуйста, введите описание товара',
-            'description.string' => 'Описание должно быть текстом',
+            'description.required' => 'Описание товара обязательно.',
+            'description.string' => 'Описание должно быть строкой.',
 
-            // Поле structure
-            'structure.string' => 'Состав должен быть текстом',
+            'category_id.required' => 'Выберите категорию.',
+            'category_id.exists' => 'Категория не существует.',
 
-            // Поле cooking_method
-            'cooking_method.string' => 'Способ приготовления должен быть текстом',
+            // ----- Варианты -----
+            'variants.required' => 'Добавьте хотя бы один вариант товара.',
+            'variants.array' => 'Неверный формат вариантов.',
+            'variants.min' => 'Добавьте хотя бы один вариант.',
 
-            // Поле price
-            'price.required' => 'Пожалуйста, укажите цену товара',
-            'price.integer' => 'Цена должна быть целым числом',
-            'price.min' => 'Цена должна быть положительной',
+            // ----- SKU -----
+            'variants.*.sku.required' => 'Артикул (SKU) обязателен.',
+            'variants.*.sku.string' => 'Артикул должен быть строкой.',
 
+            // ----- Цены -----
+            'variants.*.price.required' => 'Цена обязательна.',
+            'variants.*.price.numeric' => 'Цена должна быть числом.',
+            'variants.*.price.min' => 'Цена не может быть отрицательной.',
 
-            // Поле calories
-            'calories.integer' => 'Калории должны быть целым числом',
-            'calories.min' => 'Калории должны быть положительным числом',
+            'variants.*.old_price.numeric' => 'Старая цена должна быть числом.',
+            'variants.*.old_price.min' => 'Старая цена не может быть отрицательной.',
 
+            // ----- Количество -----
+            'variants.*.count.required' => 'Укажите количество товара.',
+            'variants.*.count.integer' => 'Количество должно быть целым числом.',
+            'variants.*.count.min' => 'Количество не может быть отрицательным.',
 
+            // ----- Изображения -----
+            'variants.*.images.required' => 'Добавьте хотя бы одно изображение для варианта.',
+            'variants.*.images.array' => 'Неверный формат изображений.',
+            'variants.*.images.min' => 'Загрузите хотя бы одно изображение.',
+            'variants.*.images.max' => 'Максимум 10 изображений на вариант.',
+            'variants.*.images.*.image' => 'Файл должен быть изображением.',
+            'variants.*.images.*.mimes' => 'Допустимые форматы: jpeg, png, jpg, gif, webp.',
+            'variants.*.images.*.max' => 'Размер изображения не должен превышать 5 МБ.',
 
-            // Поле images
-            'images.required' => 'Пожалуйста, загрузите хотя бы одно изображение',
-            'images.array' => 'Изображения должны быть переданы в виде массива',
-            'images.min' => 'Загрузите хотя бы одно изображение',
-            'images.max' => 'Максимальное количество изображений: 10',
-            'images.*.image' => 'Файл должен быть изображением',
-            'images.*.mimes' => 'Допустимые форматы: jpeg, png, jpg, gif, webp',
-            'images.*.max' => 'Максимальный размер изображения: 5MB',
-
-            // Поле category_id
-            'category_id.required' => 'Пожалуйста, выберите категорию',
-            'category_id.exists' => 'Выбранная категория не существует или неактивна',
+            // ----- Атрибуты -----
+            'variants.*.attribute_values.required' => 'Укажите характеристики варианта (цвет, размер и т.д.).',
+            'variants.*.attribute_values.array' => 'Неверный формат характеристик.',
+            'variants.*.attribute_values.min' => 'Укажите хотя бы одну характеристику.',
+            'variants.*.attribute_values.*.exists' => 'Характеристика не найдена в системе.',
         ];
     }
 }

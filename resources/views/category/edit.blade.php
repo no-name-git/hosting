@@ -5,7 +5,6 @@
     @csrf
     @method('patch')
     @include('category.layouts.form')
-    </div>
     <button type="submit" class="btn btn-primary">Редактировать</button>
 </form>
 

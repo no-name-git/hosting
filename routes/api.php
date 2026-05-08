@@ -18,4 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/products', [\App\Http\Controllers\API\Product\ProductController::class, 'index']);
+// API для товаров (публичный доступ для просмотра)
+Route::prefix('products')->group(function () {
+    Route::get('/', [\App\Http\Controllers\API\Product\ProductController::class, 'index']);
+    Route::get('/{id}', [\App\Http\Controllers\API\Product\ProductController::class, 'show']);
+});

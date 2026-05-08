@@ -3,16 +3,19 @@
 namespace App\Services;
 
 use App\Models\Category;
+use App\Repositories\AttributeRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
 
     public function __construct(
         private CategoryRepository $categoryRepository,
-        private ProductRepository  $productRepository
+        private ProductRepository  $productRepository,
+        private AttributeRepository $attributeValueRepository
     )
     {
     }
@@ -33,7 +36,22 @@ class CategoryService
 
     public function createCategory(array $data): Category #: Category это то что мы можем вернуть
     {
-        return $this->categoryRepository->create($data);
+        DB::beginTransaction();
+        try {
+            if (isset($data['attributes'])) {
+                $attributesData = $data['attributes'];
+                unset($data['attributes']);
+            }
+            $category = $this->categoryRepository->create($data);
+            $attribute = $this->attributeValueRepository->create($attributesData);
+            $category->attributes()->attach($attribute->id);
+            DB::commit();
+            return $category;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+    }
     }
 
     public function updateCategory(array $data, int $id): Category

@@ -12,15 +12,15 @@ class ProductImages extends Model
     protected $table = 'product_images';
     protected $guarded = false;
 
-    public function product()
+    public function productVariant()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsTo(ProductVariant::class, 'variant_id', 'id');
     }
 
-    public function test()
-    {
-        return 111;
-    }
+    protected $appends = ['image_url'];
+    protected $casts = [
+        'is_main' => 'boolean'
+    ];
     public function getImageUrlAttribute()
     {
         return url('storage/' . $this->file_path);

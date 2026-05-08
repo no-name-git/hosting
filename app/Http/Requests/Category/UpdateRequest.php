@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -24,15 +25,31 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string'
+            'title' => [
+                'required',
+                'string',
+                Rule::unique('categories', 'title')
+            ],
+            'slug' => [
+                'required',
+                'string',
+                Rule::unique('categories', 'slug')
+            ],
         ];
     }
     public function messages()
     {
         return [
-            'title.required' => 'это обязательное поле',
-            'title.string' => 'это поле должно быть строкой',
-
+            'title' => [
+                'required' => 'Поле "Название" обязательно для заполнения.',
+                'string' => 'Поле "Название" должно быть строкой.',
+                'unique' => 'Категория с таким названием уже существует.'
+            ],
+            'slug' => [
+                'required' => 'Поле "Slug" обязательно для заполнения.',
+                'string' => 'Поле "Slug" должно быть строкой.',
+                'unique' => 'Категория с таким URL-именем (slug) уже существует.'
+            ],
         ];
     }
 }

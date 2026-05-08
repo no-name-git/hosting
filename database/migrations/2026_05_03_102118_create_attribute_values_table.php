@@ -13,11 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('attribute_values', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->foreignId('attribute_id')->constrained()->onDelete('cascade');
+            $table->string('value'); // значение атрибута
             $table->string('slug');
+            $table->string('color_hex')->nullable(); // для цветов - hex код
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
+
+            $table->unique(['attribute_id', 'slug']);
         });
     }
 
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('attribute_values');
     }
 };

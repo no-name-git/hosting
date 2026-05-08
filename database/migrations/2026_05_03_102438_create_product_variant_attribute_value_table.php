@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->integer('discount')->nullable();
-            $table->integer('count');
-            $table->integer('oldPrice')->nullable();
+        Schema::create('product_variant_attribute_value', function (Blueprint $table) {
+            $table->foreignId('product_variant_id')->constrained();
+            $table->foreignId('attribute_value_id')->constrained();
+            $table->primary(['product_variant_id', 'attribute_value_id']);
         });
     }
 
@@ -27,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('product_variant_attribute_value');
     }
 };

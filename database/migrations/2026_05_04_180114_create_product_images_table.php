@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('works', function (Blueprint $table) {
-
-            $table->string('key');
-            $table->string('skils');
+        Schema::create('product_images', function (Blueprint $table) {
+            $table->id();
+            $table->string('file_path');
+            $table->boolean('is_main')->default(false);
+            $table->foreignId('variant_id')->index()->constrained('product_variants')->onDelete('cascade');;
+            $table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('product_images');
     }
 };

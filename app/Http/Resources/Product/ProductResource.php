@@ -2,37 +2,30 @@
 
 namespace App\Http\Resources\Product;
 
-use App\Http\Resources\Category\CategoryResource;
+use App\Repositories\ProductVariantRepository;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
-
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
     public function toArray($request)
     {
         return [
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'price' => $this->price,
-            'oldPrice' => $this->oldPrice,
-            'count' => $this->count,
-            'is_published' => $this->is_published,
-            'hit_sale' => $this->hit_sale,
-            'category' => new CategoryResource($this->category),
-//            'image_url'=> $this->productImages->test,
+            'slug' => $this->slug,
 
+            // Категория
+            'category' => [
+                'id' => $this->category->id ?? null,
+                'title' => $this->category->title ?? null,
+            ],
 
+            // Варианты товара (размеры, цвета и т.д.)
+            'variants' => ProductVariantResource::collection($this->variants),
 
-
-
-
+            'created_at' => $this->created_at?->toISOString(),
+            'updated_at' => $this->updated_at?->toISOString(),
         ];
     }
 }

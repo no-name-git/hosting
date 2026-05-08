@@ -6,91 +6,47 @@ use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
-
-/**
- * в репозитории я пишу обращения в бд
- * отсюда я могу получить данные и отправить данные
- *
- * а вот в сервисах я управляю этими данными
- * обновить
- * создать
- * удалить
- */
-
-
-
 class ProductRepository
 {
-
-    #ищем продукт по айдишнику
-    public function findById(int $id): ?Product #получает айдишник как число и если находит то возвращяет продукт , если нет то ничего не вернет
+    public function getAll(int $perPage = 20): LengthAwarePaginator
     {
-        return Product::query() #вернет отбащение к бд через модельку и начинаем поиск
-        ->with(['category', 'productImages']) #пойди в базу и захвати с собой данные из категорий и картинок
-        ->find($id); #искать будешь по этому айдишнику
+        return Product::paginate($perPage);
     }
 
-    #запрос на выгрузку для админки с дефолтным значением 20 штук, если больше придет то пагинация будет больше
-    public function findAdminList(int $perPage = 20) : LengthAwarePaginator #вернеть с разбивкой по страницам
+    public function create(array $data): Product
     {
-        return Product::query()
-        ->with('category:id,title') #возьми из категории только айди и заголовок
-        ->select(['id', 'title', 'price', 'is_published', 'category_id', 'created_at']) #выгрузи только эти поля
-        ->latest('id') #сортировка где сначала новые
-        ->paginate($perPage); #пагинация из аргумента
+        return Product::create($data);
     }
 
-    #здесь мы вызываем все товары либо товары с определенной категорией
-    public function findCatalogList(?int $category_id, int $perPage = 24): LengthAwarePaginator #у нас может не прийти категория и тогда отобразим все товары или наоборот отобразим товары определенной категории
+    public function edit($product , array $data): Product
     {
-        return Product::query()
-        ->with('category:id,title', 'productImages:id,product_id,file_path, is_active') #тут мы берем поля которые нам нужны
-        ->where('is_published', true) #только активные товары
-        ->when($category_id, fn ($q) => $q->where('category_id', $category_id))
-        #whem это как обычное if просто сокращенное и мы получаем следующее
-        #если $category_id равен true то выполни функцию где мы берем товары которые соответствуют условию
-        #а если false то ничего не делай и просто отобразятся все товары
-
-        ->latest('id')
-        ->paginate($perPage);
+        $product->update($data);
+        return $product->fresh();
     }
 
-    #получение популярных товаров с лимитом в 9 штук
-    public function findHitProducts(int $limit = 9): Collection
+    public function findById(int $id): ?Product
     {
-        return Product::query()
-        ->with(['category:id,title', 'productImages:id,product_id,file_path,is_active'])
-        ->where('hit_sale', true)
-        ->where('is_published', true)
-        ->latest('id')
-        ->limit($limit)
-        ->get();
+        return Product::with('variants.attributeValues')->find($id);
     }
 
-    #вернет товары по категории
-    public function getByCategory(int $id, $perPage = 15): LengthAwarePaginator
+    public function getByCategory(int $categoryId, array $filters = [] )
     {
-        return Product::where('category_id', $id)->paginate($perPage);
+        $query = Product::where('category_id', $categoryId);
+        if(isset($filters['attributes'])){
+            $query->whereHas('variants.attributeValues', function ($q) use ($filters){
+                $q->whereIn('attribute_value_id', $filters['attributes']);
+            });
+        }
+        return $query->paginate(20);
     }
 
-    public function search(string $query, int $perPage = 20): LengthAwarePaginator
+    public function update(int $id, array $data): bool
     {
-        return Product::select(['id', 'title', 'price', 'is_published'])
-            ->where('title', 'LIKE', "%{$query}%")
-            ->orWhere('description', 'LIKE', "%{$query}%")
-            ->orWhere('cooking_method', 'LIKE', "%{$query}%")
-            ->paginate($perPage);
+        return Product::where('id', $id)->update($data);
     }
 
-    public function create()
+    public function delete(int $id): bool
     {
-                    //        категории
-                    //        теги
-                    //        цвет
-    }
-
-    public function getFind($id)
-    {
-        return Product::find($id);
+        return Product::destroy($id);
     }
 }

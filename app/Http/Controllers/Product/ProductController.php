@@ -29,7 +29,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(20);
+        $products = $this->productService->getAll();
         return view('product.index', compact('products'));
     }
 
@@ -42,38 +42,10 @@ class ProductController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
-        $images = $data['images'];
-        $colorId = $data['colors'] ?? [];
-        $tagsId = $data['tags'] ?? [];
-        unset($data['images'], $data['colors'], $data['tags']);
-        if(isset($data['discount'])){
-            $newPrice = ($data['price'] * $data['discount'])/100;
-            $newPrice = $data['price'] - $newPrice;
-            $data['oldPrice'] = $newPrice;
-        }
-
-        $product = Product::create($data);
-
-        if(!empty($colorId)){
-            $product->colors()->attach($colorId);
-        }
-
-        if(!empty($tagsId)){
-            $product->tags()->attach($tagsId);
-        }
+        $this->productService->store($data);
+        return redirect()->route('product.index')->with('success', 'Продукт успешно создан');
 
 
-
-        ProductImages::where('product_id', $product->id)->count();
-        $file_path = Storage::disk('public')->put('images', $images);
-        ProductImages::create([
-            'file_path' => $file_path,
-            'product_id' => $product->id,
-            'is_active' => 1,
-        ]);
-
-
-        return redirect()->route('seo.create')->with('success', 'Продукт успешно создан');
     }
 
     /**
@@ -82,8 +54,10 @@ class ProductController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
+        $product = $this->productService->getById($id);
+
         return view('product.show', compact('product'));
     }
 
@@ -94,10 +68,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::select('id', 'title')->get();
-        $tags = Tag::select('id', 'title')->get();
-        $colors = Color::select('id', 'title')->get();
-        return view('product.create', compact('categories', 'tags', 'colors'));
+        $categories = Category::with('attributes.values')->get();
+        return view('product.create', compact('categories'));
     }
 
     /**
@@ -108,12 +80,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-
-        $categories = Category::select('id', 'title')->get();
-        $tags = Tag::select('id', 'title')->get();
-        $colors = Color::select('id', 'title')->get();
-        $images = ProductImages::where('product_id', $product->id)->get();
-        return view('product.edit', compact('product', 'categories', 'tags', 'colors', 'images'));
+        $product->load('variants.attributeValues.attribute', 'productImages', 'category.attributes.values');
+        $categories = Category::with('attributes.values')->get();
+        return view('product.edit', compact('product', 'categories'));
     }
 
     /**
@@ -123,46 +92,11 @@ class ProductController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Product $product)
+    public function update(UpdateRequest $request, $product)
     {
-//        dd($request->all());
         $data = $request->validated();
-
-        if ($request->hasFile('images')) {
-            $files = $request->file('images');
-
-            $files = is_array($files) ? $files : [$files];
-
-            foreach ($files as $file) {
-                $path = $file->store('images', 'public');
-
-                $update = ProductImages::where('product_id', $product->id)->get();
-                foreach ($update as $item) {
-                    $item->update([
-                        'is_active' => null,
-                    ]);
-                    Storage::disk('public')->delete($item->file_path);
-                }
-
-                ProductImages::where('product_id', $product->id)
-                    ->whereNull('is_active')
-                    ->delete();
-
-
-                ProductImages::create([
-                    'product_id' => $product->id,
-                    'file_path' => $path,
-                    'is_active' => 1
-                ]);
-            }
-
-        }
-
-        unset($data['images']);
-        $product->update($data);
-
-        return redirect()->route('product.show', $product->id)
-            ->with('success', 'Продукт успешно обновлен');
+        $this->productService->update($data, $product);
+        return redirect()->route('product.show', $product)->with('success', 'Продукт успешно обновлен');
 
     }
 

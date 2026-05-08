@@ -14,6 +14,10 @@
             <td>{{$category->title}}</td>
         </tr>
         <tr>
+            <th scope="col">Slug:</th>
+            <td>{{$category->slug}}</td>
+        </tr>
+        <tr>
             <th scope="col">Количество продуктов в категории:</th>
             <td>{{$category->products_count}}</td>
         </tr>

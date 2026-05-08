@@ -7,6 +7,7 @@ use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -44,7 +45,6 @@ class CategoryController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
-
         $this->categoryService->createCategory($data);
 
         return redirect()->route('category.index')->with('success', 'Категория успешно создана!');

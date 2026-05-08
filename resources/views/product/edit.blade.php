@@ -1,7 +1,7 @@
 @extends('layouts.main', ['title_page' => 'Редактирование продукта'])
 
 @section('content')
-<form action="{{route('product.update', $product->id)}}" method="post" style="width: 250px;" enctype="multipart/form-data">
+<form action="{{route('product.update', $product->id)}}" method="post" style="width: 320px;" enctype="multipart/form-data">
     @csrf
     @method('patch')
     @include('product.layouts.form')

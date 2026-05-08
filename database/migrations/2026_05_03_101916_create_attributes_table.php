@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
+            $table->string('name'); // Размер, Цвет, Материал и т.д.
             $table->string('slug')->unique();
-            $table->foreignId('category_id')->nullable()->index()->constrained('categories')->onDelete('cascade');
+            $table->integer('sort_order')->default(0);
+            $table->boolean('is_required')->default(false); // обязательный ли атрибут
+            $table->boolean('is_filterable')->default(true); // использовать в фильтрах
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('attributes');
     }
 };

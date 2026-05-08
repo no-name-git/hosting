@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/fbhmechdhe', function () {
+Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -13,7 +13,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/nkvfnfalpp', [\App\Http\Controllers\Main\IndexController::class, 'index'])->middleware(['auth', 'admin'])->name('main.index');
+Route::get('/adminboard', [\App\Http\Controllers\Main\IndexController::class, 'index'])->middleware(['auth', 'admin'])->name('main.index');
 
 //CATEGORY
 Route::middleware('admin')->prefix('category')->group(function (){
@@ -83,8 +83,8 @@ Route::middleware('admin')->prefix('user')->group(function (){
 Route::get('/search', [\App\Http\Controllers\Search\SearchController::class, 'index'])
     ->middleware('admin')
     ->name('search');
-Route::get('/', [App\Http\Controllers\Index\IndexController::class, 'index'])->name('index.index');
-Route::get('/catalog', [App\Http\Controllers\Index\IndexController::class, 'catalog'])->name('index.catalog');
-Route::get('/about', [App\Http\Controllers\Index\IndexController::class, 'about'])->name('index.about');
+//Route::get('/', [App\Http\Controllers\Index\IndexController::class, 'index'])->name('index.index');
+//Route::get('/catalog', [App\Http\Controllers\Index\IndexController::class, 'catalog'])->name('index.catalog');
+//Route::get('/about', [App\Http\Controllers\Index\IndexController::class, 'about'])->name('index.about');
 
 require __DIR__.'/auth.php';
