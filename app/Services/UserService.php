@@ -29,6 +29,7 @@ class UserService
 
     public function getFind(int $id): User
     {
+//        хочу добавить отображение у продавцов его продуктов а у пользователей покупки
 //        $user = $this->userRepository->getFind($id);
 //        $user->products_count = $user->getCountProduct();
 //        $user->products_list = $this->userRepository->getProductForUser($id, $perPage = 20);
